@@ -299,7 +299,7 @@ def parse_args():
                         required=False,
                         default=['#000000'])
 
-    parser.add_argument('--overlay)',
+    parser.add_argument('--overlay',
                         type=str,
                         nargs=1,
                         dest='dev_frame',
@@ -309,7 +309,7 @@ def parse_args():
                         required=True,
                         default=['iphoneXSmax'])
 
-    parser.add_argument('--orientation)',
+    parser.add_argument('--orientation',
                         type=str,
                         nargs=1,
                         dest='orientation',

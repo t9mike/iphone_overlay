@@ -20,8 +20,8 @@ git clone https://github.com/carlashley/iphone_overlay && cd iphone_overlay && c
 ```
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -h
 usage: iphoneoverlay.py [-h] [-a] -i <filename.mp4> [-o <filename.mp4>]
-                        [-c "#ffffff"] --overlay) <device frame>
-                        [--orientation) <orientation>] [-d] [-v]
+                        [-c "#ffffff"] --overlay <device frame>
+                        [--orientation <orientation>] [-d] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -33,9 +33,9 @@ optional arguments:
   -c, --bg-colour "#ffffff"
                         Background colour. If specifying RGB code, quote the
                         code. For example: "#ffffff"
-  --overlay) <device frame>
+  --overlay <device frame>
                         Device frame to use as overlay.
-  --orientation) <orientation>
+  --orientation <orientation>
                         Orientation of final video. Defaults to portrait.
   -d, --debug           Debug output.
   -v, --version         show program's version number and exit
