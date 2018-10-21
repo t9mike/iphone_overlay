@@ -100,6 +100,9 @@ class DeviceFrameOverlayToVideo():
             resize_cmd = ' '.join(resize_cmd)
             subprocess.call(resize_cmd, shell=True)
 
+            if os.path.exists(video_out):
+                print('Video saved to: {}'.format(video_out))
+
         except Exception as e:
             raise
             print(e)
