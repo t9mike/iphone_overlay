@@ -4,6 +4,7 @@ This `python` script uses `ffmpeg` to convert an iOS screen recording from an iP
 This was inspired by an iOS Shortcut that added an iOS device "frame" overlay onto a screenshot.
 
 ![Screenshot](Device_Frame.png)
+![Screenshot](Landscape.png)
 
 ## Requirements
 - Tested on `python 2.7.10` on macOS, and with `ffmpeg 4.0.2-tessus` for macOS
