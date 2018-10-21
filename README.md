@@ -46,28 +46,22 @@ Both `-i, --input` and `--overlay` are required arguments.
 ### Basic run with only input video file and overlay
 ```
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 --overlay iphoneXSmax
-Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation.
+Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation and applying overlay.
 frame=  490 fps= 45 q=-1.0 Lsize=     680kB time=00:00:08.11 bitrate= 686.1kbits/s dup=2 drop=0 speed=0.746x    
-Overlaying device frame and saving new video to /Users/jappleseed/Downloads/Portrait_overlay.mp4
-frame=  490 fps=104 q=-1.0 Lsize=     649kB time=00:00:08.11 bitrate= 655.3kbits/s speed=1.72x
 ```
 
 ### Specify input video file, overlay, and background colour, no output filename
 ```
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 --overlay iphoneXSmax --bg-colour="#b00d23"
-Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation.
+Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation and applying overlay.
 frame=  490 fps= 45 q=-1.0 Lsize=     693kB time=00:00:08.11 bitrate= 699.2kbits/s dup=2 drop=0 speed=0.752x    
-Overlaying device frame and saving new video to /Users/jappleseed/Downloads/Portrait_overlay.mp4
-frame=  490 fps=106 q=-1.0 Lsize=     658kB time=00:00:08.11 bitrate= 664.1kbits/s speed=1.75x 
 ```
 
 ### Specify input video file, output video file, background colour, overlay, and orientation
 ```
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 -o HelloWorld_Landscape.mp4 --bg-colour="#ffffff" --overlay iphoneXSmax --orientation landscape
-Resizing source video to match device frame iPhone-XS-Max-Landscape-Space-Gray.png image size in landscape orientation.
+Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in landscape orientation and applying overlay.
 frame=  490 fps= 55 q=-1.0 Lsize=     703kB time=00:00:08.11 bitrate= 709.5kbits/s dup=2 drop=0 speed=0.912x
-Overlaying device frame and saving new video to HelloWorld_Landscape.mp4
-frame=  490 fps=102 q=-1.0 Lsize=     636kB time=00:00:08.11 bitrate= 641.9kbits/s speed= 1.7x
 ```
 
 ## Limitations
