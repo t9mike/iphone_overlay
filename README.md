@@ -18,12 +18,13 @@ git clone https://github.com/carlashley/iphone_overlay && cd iphone_overlay && c
 ### View Help
 ```
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -h
-usage: iphoneoverlay.py [-h] -i <filename.mp4> [-o <filename.mp4>]
+usage: iphoneoverlay.py [-h] [-a] -i <filename.mp4> [-o <filename.mp4>]
                         [-c "#ffffff"] --overlay) <device frame>
-                        [--orientation) <orientation>] [-v]
+                        [--orientation) <orientation>] [-d] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
+  -a, --keep-audio      Keep audio.
   -i, --input <filename.mp4>
                         Screen recording to add device frame to.
   -o, --output <filename.mp4>
@@ -35,6 +36,7 @@ optional arguments:
                         Device frame to use as overlay.
   --orientation) <orientation>
                         Orientation of final video. Defaults to portrait.
+  -d, --debug           Debug output.
   -v, --version         show program's version number and exit
 ```
 iOS screen recordings will need to be saved to your Mac in order to create the overlay.

@@ -270,7 +270,7 @@ def parse_args():
     parser.add_argument('-a', '--keep-audio',
                         action='store_true',
                         dest='keep_audio',
-                        help='Keep audio..',
+                        help='Keep audio.',
                         required=False,
                         default=False)
 
