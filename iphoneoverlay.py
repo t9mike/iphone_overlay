@@ -40,7 +40,7 @@ class DeviceFrameOverlayToVideo():
     def overlay(video_in, device_frame, orientation=None, video_out=None, colour=None, remove_tmp=True):
         try:
             # Video to temporarily create in order to overlay image
-            tmp_video = '/tmp/{}.mp4'.format(str(uuid.uuid1()).replace('-', ''))
+            # tmp_video = '/tmp/{}.mp4'.format(str(uuid.uuid1()).replace('-', ''))
 
             # Video input
             video_in = os.path.expanduser(video_in) if video_in.startswith('~') else video_in
@@ -79,27 +79,26 @@ class DeviceFrameOverlayToVideo():
                 colour = '#000000'
 
             # Resize and centre
-            print('Resizing source video to match device frame {} image size in {} orientation.'.format(os.path.basename(device_frame), orientation))
-            resize_cmd = ['/usr/local/bin/ffmpeg', '-y', '-v', 'quiet', '-stats', '-i', video_in, '-vf', '{}:force_original_aspect_ratio=decrease,pad={}:(ow-iw)/2:(oh-ih)/2:color={},setsar=1,format=rgb24'.format(scale, padding, colour), '-codec:a', 'copy', '-an', tmp_video]
-            subprocess.call(resize_cmd)
-
-            # Overlay
-            overlay_cmd = ['/usr/local/bin/ffmpeg', '-y', '-v', 'quiet', '-stats', '-i', tmp_video, '-i', '"{}"'.format(device_frame), '-filter_complex', '\"overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2\"', '-codec:a', 'copy', '"{}"'.format(video_out)]
-
-            # overlay_cmd doesn't play well unless passed out to shell, so re-format cmd
-            overlay_cmd = ' '.join(overlay_cmd)
-            print('Overlaying device frame and saving new video to {}'.format(video_out))
-            subprocess.call(overlay_cmd, shell=True)
-
-            # Clean up tmp file
-            if remove_tmp:
-                try:
-                    os.remove(tmp_video)
-                except Exception:
-                    try:
-                        os.remove(tmp_video)
-                    except Exception:
-                        raise
+            print('Resizing source video to match device frame {} image size in {} orientation and applying overlay.'.format(os.path.basename(device_frame), orientation))
+            resize_cmd = [
+                '/usr/local/bin/ffmpeg',
+                '-y',
+                '-v',
+                'quiet',
+                '-stats',
+                '-i',
+                '"{}"'.format(video_in),
+                '-i',
+                '"{}"'.format(device_frame),
+                '-filter_complex',
+                '"{},pad={}:(ow-iw)/2:(oh-ih)/2:color={},setsar=1,format=rgb24,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2"'.format(scale, padding, colour),
+                '-codec:a',
+                'copy',
+                '-an',
+                '"{}"'.format(video_out)
+            ]
+            resize_cmd = ' '.join(resize_cmd)
+            subprocess.call(resize_cmd, shell=True)
 
         except Exception as e:
             raise
