@@ -48,6 +48,7 @@ Both `-i, --input` and `--overlay` are required arguments.
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 --overlay iphoneXSmax
 Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation and applying overlay.
 frame=  490 fps= 45 q=-1.0 Lsize=     680kB time=00:00:08.11 bitrate= 686.1kbits/s dup=2 drop=0 speed=0.746x    
+Video saved to: /Users/jappleseed/Downloads/Portrait_overlay.mp4
 ```
 
 ### Specify input video file, overlay, and background colour, no output filename
@@ -55,6 +56,7 @@ frame=  490 fps= 45 q=-1.0 Lsize=     680kB time=00:00:08.11 bitrate= 686.1kbits
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 --overlay iphoneXSmax --bg-colour="#b00d23"
 Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in portrait orientation and applying overlay.
 frame=  490 fps= 45 q=-1.0 Lsize=     693kB time=00:00:08.11 bitrate= 699.2kbits/s dup=2 drop=0 speed=0.752x    
+Video saved to: /Users/jappleseed/Downloads/Portrait_overlay.mp4
 ```
 
 ### Specify input video file, output video file, background colour, overlay, and orientation
@@ -62,6 +64,7 @@ frame=  490 fps= 45 q=-1.0 Lsize=     693kB time=00:00:08.11 bitrate= 699.2kbits
 [jappleseed@pegasus]:iphone_overlay # ./iphoneoverlay.py -i ~/Downloads/Portrait.mp4 -o HelloWorld_Landscape.mp4 --bg-colour="#ffffff" --overlay iphoneXSmax --orientation landscape
 Resizing source video to match device frame iPhone-XS-Max-Portrait-Space-Gray.png image size in landscape orientation and applying overlay.
 frame=  490 fps= 55 q=-1.0 Lsize=     703kB time=00:00:08.11 bitrate= 709.5kbits/s dup=2 drop=0 speed=0.912x
+Video saved to: /Users/jappleseed/Documents/git/Portrait_overlay.mp4
 ```
 
 ## Limitations
