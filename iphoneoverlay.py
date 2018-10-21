@@ -5,7 +5,6 @@ import argparse
 import os
 import subprocess
 import sys
-import uuid
 
 NAME = 'iphoneoverlay.py'
 VERSION = '1.0.1.20181021'
@@ -16,19 +15,73 @@ APPLE_COPYRIGHT = 'Apple, the Apple logo, Apple TV, Apple Watch, iPad, iPhone, i
 DEVICE_FRAMES_PATH = 'device_frames'
 
 DEVICE_FRAMES = {
+    # Dimensions in this dict are designed to maintain the original screen recording resolution where possible
+    # 'padding' is the size of the overlay image
+    # 'scale': uses the height (or width in landscape orientation) to scale the video
     'landscape': {
+        'iphone8S': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Silver.png'),
+            'padding': '1800:920',
+            'scale': 'scale=1334:-1',
+        },
+        'iphone8SG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Space-Gray.png'),
+            'padding': '1800:920',
+            'scale': 'scale=1334:-1',
+        },
+        'iphone8plusS': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Silver.png'),
+            'padding': '2540:1280',
+            'scale': 'scale=1920:-1',
+        },
+        'iphone8plusSG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Space-Gray.png'),
+            'padding': '2540:1280',
+            'scale': 'scale=1920:-1',
+        },
+        'iphoneXS': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Landscape-Space-Gray.png'),
+            'padding': '2062:1044',
+            'scale': 'scale=1920:-1',
+        },
         'iphoneXSmax': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Landscape-Space-Gray.png'),
-            'padding': '1748:888',
-            'scale': 'transpose=2,scale=1640:-1',
+            'padding': '2050:1032',
+            'scale': 'transpose=2,scale=1920:-1',
         }
     },
     'portrait': {
+        'iphone8S': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Silver.png'),
+            'padding': '920:1800',
+            'scale': 'scale=-1:1334',
+        },
+        'iphone8SG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Space-Gray.png'),
+            'padding': '920:1800',
+            'scale': 'scale=-1:1334',
+        },
+        'iphone8plusS': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Silver.png'),
+            'padding': '1280:2540',
+            'scale': 'scale=-1:1920',
+        },
+        'iphone8plusSG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Space-Gray.png'),
+            'padding': '1280:2540',
+            'scale': 'scale=-1:1920',
+        },
+        'iphoneXS': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Portrait-Space-Gray.png'),
+            'padding': '1044:2062',
+            'scale': 'scale=-1:1920',
+        },
         'iphoneXSmax': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Portrait-Space-Gray.png'),
-            'padding': '888:1748',
-            'scale': 'scale=-1:1640',
+            'padding': '1032:2050',
+            'scale': 'scale=-1:1920',
         }
+
     },
 }
 
