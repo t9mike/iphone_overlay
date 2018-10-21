@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 NAME = 'iphoneoverlay.py'
-VERSION = '1.0.1.20181021'
+VERSION = '1.0.2.20181021'
 AUTHOR = 'Carl Windus'
 LICENSE = 'Python code is licensed under Apache License 2.0.'
 APPLE_COPYRIGHT = 'Apple, the Apple logo, Apple TV, Apple Watch, iPad, iPhone, iPod, iPod touch, iTunes, the iTunes logo, Mac, iMac, MacBook, MacBook Pro, MacBook Air, macOS, and QuickTime are trademarks of Apple Inc., registered in the U.S. and other countries.'

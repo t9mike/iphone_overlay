@@ -69,3 +69,4 @@ Video saved to: /Users/jappleseed/Documents/git/Portrait_overlay.mp4
 
 ## Limitations
 - Currently only works for video recorded on an iPhone XS Max.
+- If the screen recording or video being inserted into the device frame is smaller than the device frame, the background colour will be visible.
