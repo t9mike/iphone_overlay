@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 NAME = 'iphoneoverlay.py'
-VERSION = '1.0.2.20181021'
+VERSION = '1.0.3.20181021'
 AUTHOR = 'Carl Windus'
 LICENSE = 'Python code is licensed under Apache License 2.0.'
 APPLE_COPYRIGHT = 'Apple, the Apple logo, Apple TV, Apple Watch, iPad, iPhone, iPod, iPod touch, iTunes, the iTunes logo, Mac, iMac, MacBook, MacBook Pro, MacBook Air, macOS, and QuickTime are trademarks of Apple Inc., registered in the U.S. and other countries.'
@@ -16,38 +16,52 @@ DEVICE_FRAMES_PATH = 'device_frames'
 
 DEVICE_FRAMES = {
     # Dimensions in this dict are designed to maintain the original screen recording resolution where possible
-    # 'padding' is the size of the overlay image
-    # 'scale': uses the height (or width in landscape orientation) to scale the video
+    # 'padding': width:height size of the overlay
+    # 'scale':  width:height to re-scale the video, use -1 to preserve that dimension dynamically
+    # 'overlay_position': width:height of device frame overlay placement
+    # 'video_position': x:y positioning of video
     'landscape': {
         'iphone8Silver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Silver.png'),
             'padding': '1800:920',
             'scale': 'scale=1334:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8SpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Space-Gray.png'),
             'padding': '1800:920',
             'scale': 'scale=1334:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8plusSilver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Silver.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8plusSpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Space-Gray.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphoneXS': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Landscape-Space-Gray.png'),
             'padding': '2062:1044',
             'scale': 'scale=1920:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphoneXSmax': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Landscape-Space-Gray.png'),
             'padding': '2050:1032',
             'scale': 'scale=1920:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         }
     },
     'portrait': {
@@ -55,33 +69,65 @@ DEVICE_FRAMES = {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Silver.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8SpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Space-Gray.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8plusSilver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Silver.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8plusSpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Space-Gray.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphoneXS': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Portrait-Space-Gray.png'),
             'padding': '1044:2062',
             'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphoneXSmax': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Portrait-Space-Gray.png'),
             'padding': '1032:2050',
             'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
+        'imac27': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iMac-27-Silver.png'),
+            'padding': '2820:2270',
+            'scale': 'scale=2560:-1',
+            'overlay_position': '0:0',
+            'video_position': '(ow-iw)/2:125',
+        },
+        'imac27r': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iMac-27-5K-Silver.png'),
+            'padding': '5640:4540',
+            'scale': 'scale=5640:-1',
+            'overlay_position': '0:0',
+            'video_position': '(ow-iw)/2:250',
+        },
+        'imac27pro': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iMac-Pro-27-SpaceGray.png'),
+            'padding': '5640:4690',
+            'scale': 'scale=2560:-1',
+            'overlay_position': '0:0',
+            'video_position': '(ow-iw)/2:250',
         }
-
     },
 }
 
@@ -90,7 +136,7 @@ DEVICE_FRAMES_SUPPORTED = list(set(DEVICE_FRAMES['landscape'].keys() + DEVICE_FR
 
 class DeviceFrameOverlayToVideo():
     @staticmethod
-    def overlay(video_in, device_frame, orientation=None, video_out=None, colour=None, debug=False):
+    def overlay(video_in, device_frame, orientation=None, video_out=None, colour=None, keep_audio=False, debug=False):
         try:
             # Video input
             video_in = os.path.expanduser(video_in) if video_in.startswith('~') else video_in
@@ -108,6 +154,8 @@ class DeviceFrameOverlayToVideo():
                 # Create variables used in the ffmpeg command
                 padding = DEVICE_FRAMES[orientation][device_frame]['padding']
                 scale = DEVICE_FRAMES[orientation][device_frame]['scale']
+                overlay_position = DEVICE_FRAMES[orientation][device_frame]['overlay_position']
+                video_position = DEVICE_FRAMES[orientation][device_frame]['video_position']
                 device_frame = DEVICE_FRAMES[orientation][device_frame]['filename']
 
                 # Add the transpose option 2 for 90deg counter clockwise rotation for landscape
@@ -144,21 +192,31 @@ class DeviceFrameOverlayToVideo():
                 '-y',
                 '-i',
                 '"{}"'.format(video_in),
+                '-an',
                 '-i',
                 '"{}"'.format(device_frame),
                 '-filter_complex',
-                '"{},pad={}:(ow-iw)/2:(oh-ih)/2:color={},setsar=1,format=rgb24,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2"'.format(scale, padding, colour),
-                '-codec:a',
-                'copy',
-                '-an',
-                '"{}"'.format(video_out)
+                '"{},pad={}:{}:color={},setsar=1,format=rgb24,overlay={}"'.format(scale, padding, video_position, colour, overlay_position),
             ]
+
+            # Add whether keeping audio or not
+            if keep_audio:
+                resize_cmd.extend(['-codec:a', 'copy'])
+            else:
+                resize_cmd.extend(['-an'])
+
+            # Add the video_out
+            resize_cmd.extend(['"{}"'.format(video_out)])
 
             # Debug
             if not debug:
                 resize_cmd.extend(['-v', 'quiet', '-stats'])
 
+            # Join into one long string because there's some arguments in here that require shell=True
             resize_cmd = ' '.join(resize_cmd)
+
+            if debug:
+                print('ffmpeg command:\t{}\n'.format(resize_cmd))
             try:
                 subprocess.check_call(resize_cmd, shell=True)
 
@@ -208,6 +266,13 @@ class SaneUsageFormat(argparse.HelpFormatter):
 
 def parse_args():
     parser = argparse.ArgumentParser(formatter_class=SaneUsageFormat)
+
+    parser.add_argument('-a', '--keep-audio',
+                        action='store_true',
+                        dest='keep_audio',
+                        help='Keep audio..',
+                        required=False,
+                        default=False)
 
     parser.add_argument('-i', '--input',
                         type=str,
@@ -273,6 +338,7 @@ def parse_args():
         args = vars(args)
 
         result = dict()
+        keep_audio = args['keep_audio']
         video_in = args.get('video_in')[0]
         extension = os.path.splitext(video_in)[1]
         video_out = args['video_out'][0] if args['video_out'] else video_in.replace(extension, '_overlay{}'.format(extension))
@@ -281,6 +347,7 @@ def parse_args():
         orientation = args['orientation'][0]
         debug = args['debug']
 
+        result['keep_audio'] = keep_audio
         result['video_in'] = video_in
         result['video_out'] = video_out
         result['bg_colour'] = bg_colour
@@ -295,7 +362,7 @@ def main():
     args = parse_args()
 
     recording = DeviceFrameOverlayToVideo()
-    recording.overlay(video_in=args['video_in'], device_frame=args['dev_frame'], orientation=args['orientation'], video_out=args['video_out'], colour=args['bg_colour'], debug=args['debug'])
+    recording.overlay(video_in=args['video_in'], device_frame=args['dev_frame'], orientation=args['orientation'], video_out=args['video_out'], colour=args['bg_colour'], keep_audio=args['keep_audio'], debug=args['debug'])
 
 
 if __name__ == '__main__':
