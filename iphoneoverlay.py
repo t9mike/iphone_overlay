@@ -19,22 +19,22 @@ DEVICE_FRAMES = {
     # 'padding' is the size of the overlay image
     # 'scale': uses the height (or width in landscape orientation) to scale the video
     'landscape': {
-        'iphone8S': {
+        'iphone8Silver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Silver.png'),
             'padding': '1800:920',
             'scale': 'scale=1334:-1',
         },
-        'iphone8SG': {
+        'iphone8SpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Space-Gray.png'),
             'padding': '1800:920',
             'scale': 'scale=1334:-1',
         },
-        'iphone8plusS': {
+        'iphone8plusSilver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Silver.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
         },
-        'iphone8plusSG': {
+        'iphone8plusSpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Space-Gray.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
@@ -47,26 +47,26 @@ DEVICE_FRAMES = {
         'iphoneXSmax': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Landscape-Space-Gray.png'),
             'padding': '2050:1032',
-            'scale': 'transpose=2,scale=1920:-1',
+            'scale': 'scale=1920:-1',
         }
     },
     'portrait': {
-        'iphone8S': {
+        'iphone8Silver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Silver.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
         },
-        'iphone8SG': {
+        'iphone8SpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Space-Gray.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
         },
-        'iphone8plusS': {
+        'iphone8plusSilver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Silver.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
         },
-        'iphone8plusSG': {
+        'iphone8plusSpaceGray': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Space-Gray.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
@@ -90,11 +90,8 @@ DEVICE_FRAMES_SUPPORTED = list(set(DEVICE_FRAMES['landscape'].keys() + DEVICE_FR
 
 class DeviceFrameOverlayToVideo():
     @staticmethod
-    def overlay(video_in, device_frame, orientation=None, video_out=None, colour=None, remove_tmp=True):
+    def overlay(video_in, device_frame, orientation=None, video_out=None, colour=None, debug=False):
         try:
-            # Video to temporarily create in order to overlay image
-            # tmp_video = '/tmp/{}.mp4'.format(str(uuid.uuid1()).replace('-', ''))
-
             # Video input
             video_in = os.path.expanduser(video_in) if video_in.startswith('~') else video_in
             video_in = os.path.expandvars(video_in) if '$' in video_in else video_in
@@ -112,6 +109,11 @@ class DeviceFrameOverlayToVideo():
                 padding = DEVICE_FRAMES[orientation][device_frame]['padding']
                 scale = DEVICE_FRAMES[orientation][device_frame]['scale']
                 device_frame = DEVICE_FRAMES[orientation][device_frame]['filename']
+
+                # Add the transpose option 2 for 90deg counter clockwise rotation for landscape
+                if 'landscape' in orientation:
+                    scale = 'transpose=2,{}'.format(scale)
+
             else:
                 print('Please specify a device frame. Supported device frames are listed below.')
                 print('\t{}'.format(DEVICE_FRAMES['landscape'].keys()))
@@ -125,6 +127,10 @@ class DeviceFrameOverlayToVideo():
                 video_out = os.path.expanduser(video_out) if video_out.startswith('~') else video_out
                 video_out = os.path.expandvars(video_out) if '$' in video_out else video_out
 
+            if video_in == video_out:
+                print('Please use a different filename for the output video.')
+                sys.exit(1)
+
             # Background colour
             if colour:
                 colour = colour
@@ -136,9 +142,6 @@ class DeviceFrameOverlayToVideo():
             resize_cmd = [
                 '/usr/local/bin/ffmpeg',
                 '-y',
-                '-v',
-                'quiet',
-                '-stats',
                 '-i',
                 '"{}"'.format(video_in),
                 '-i',
@@ -150,11 +153,20 @@ class DeviceFrameOverlayToVideo():
                 '-an',
                 '"{}"'.format(video_out)
             ]
-            resize_cmd = ' '.join(resize_cmd)
-            subprocess.call(resize_cmd, shell=True)
 
-            if os.path.exists(video_out):
-                print('Video saved to: {}'.format(video_out))
+            # Debug
+            if not debug:
+                resize_cmd.extend(['-v', 'quiet', '-stats'])
+
+            resize_cmd = ' '.join(resize_cmd)
+            try:
+                subprocess.check_call(resize_cmd, shell=True)
+
+                if os.path.exists(video_out):
+                    print('Video saved to: {}'.format(video_out))
+            except subprocess.CalledProcessError as e:
+                print('Conversion failed. Try again with the --debug argument.')
+                sys.exit(1)
 
         except Exception as e:
             raise
@@ -242,6 +254,13 @@ def parse_args():
                         required=False,
                         default=['portrait'])
 
+    parser.add_argument('-d', '--debug',
+                        action='store_true',
+                        dest='debug',
+                        help='Debug output.',
+                        required=False,
+                        default=False)
+
     parser.add_argument('-v', '--version',
                         action='version',
                         version='{} version {} by {}. {}\n{}'.format(NAME, VERSION, AUTHOR, LICENSE, APPLE_COPYRIGHT))
@@ -260,12 +279,14 @@ def parse_args():
         bg_colour = args['bg_colour'][0]
         dev_frame = args['dev_frame'][0]
         orientation = args['orientation'][0]
+        debug = args['debug']
 
         result['video_in'] = video_in
         result['video_out'] = video_out
         result['bg_colour'] = bg_colour
         result['dev_frame'] = dev_frame
         result['orientation'] = orientation
+        result['debug'] = debug
 
         return result
 
@@ -274,7 +295,7 @@ def main():
     args = parse_args()
 
     recording = DeviceFrameOverlayToVideo()
-    recording.overlay(video_in=args['video_in'], device_frame=args['dev_frame'], orientation=args['orientation'], video_out=args['video_out'], colour=args['bg_colour'])
+    recording.overlay(video_in=args['video_in'], device_frame=args['dev_frame'], orientation=args['orientation'], video_out=args['video_out'], colour=args['bg_colour'], debug=args['debug'])
 
 
 if __name__ == '__main__':
