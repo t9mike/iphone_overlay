@@ -21,6 +21,20 @@ DEVICE_FRAMES = {
     # 'overlay_position': width:height of device frame overlay placement
     # 'video_position': x:y positioning of video
     'landscape': {
+        'ipadPro129S': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPadPro-129-Landscape-Silver.png'),
+            'padding': '2268:1648',
+            'scale': 'transpose=2,transpose=2,transpose=2,scale=1920:-1',  # Only need to do this on landscape recording
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
+        'ipadPro129SG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPadPro-129-Landscape-SpaceGray.png'),
+            'padding': '2268:1648',
+            'scale': 'transpose=2,transpose=2,transpose=2,scale=1920:-1',  # Only need to do this on landscape recording
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
         'iphone8Silver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Silver.png'),
             'padding': '1800:920',
@@ -49,14 +63,14 @@ DEVICE_FRAMES = {
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphoneXS': {
+        'iphoneXS': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Landscape-Space-Gray.png'),
             'padding': '2062:1044',
             'scale': 'scale=1920:-1',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphoneXSmax': {
+        'iphoneXSmax': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Landscape-Space-Gray.png'),
             'padding': '2050:1032',
             'scale': 'scale=1920:-1',
@@ -65,6 +79,20 @@ DEVICE_FRAMES = {
         }
     },
     'portrait': {
+        'ipadPro129S': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPadPro-129-Portrait-Silver.png'),
+            'padding': '1648:2268',
+            'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
+        'ipadPro129SG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPadPro-129-Portrait-SpaceGray.png'),
+            'padding': '1648:2268',
+            'scale': 'scale=1440:-1',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
         'iphone8Silver': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Silver.png'),
             'padding': '920:1800',
@@ -93,14 +121,14 @@ DEVICE_FRAMES = {
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphoneXS': {
+        'iphoneXS': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Portrait-Space-Gray.png'),
             'padding': '1044:2062',
             'scale': 'scale=-1:1920',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphoneXSmax': {
+        'iphoneXSmax': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Portrait-Space-Gray.png'),
             'padding': '1032:2050',
             'scale': 'scale=-1:1920',
@@ -132,6 +160,7 @@ DEVICE_FRAMES = {
 }
 
 DEVICE_FRAMES_SUPPORTED = list(set(DEVICE_FRAMES['landscape'].keys() + DEVICE_FRAMES['portrait'].keys()))
+IPAD_PRO_DEVICES = [x for x in DEVICE_FRAMES_SUPPORTED if 'ipadPro' in x]
 
 
 class DeviceFrameOverlayToVideo():
@@ -152,6 +181,7 @@ class DeviceFrameOverlayToVideo():
                     orientation = orientation
 
                 # Create variables used in the ffmpeg command
+                device = device_frame  # used for device tests (check if iPad Pro, etc)
                 padding = DEVICE_FRAMES[orientation][device_frame]['padding']
                 scale = DEVICE_FRAMES[orientation][device_frame]['scale']
                 overlay_position = DEVICE_FRAMES[orientation][device_frame]['overlay_position']
@@ -192,12 +222,15 @@ class DeviceFrameOverlayToVideo():
                 '-y',
                 '-i',
                 '"{}"'.format(video_in),
-                '-an',
                 '-i',
                 '"{}"'.format(device_frame),
                 '-filter_complex',
                 '"{},pad={}:{}:color={},setsar=1,format=rgb24,overlay={}"'.format(scale, padding, video_position, colour, overlay_position),
             ]
+
+            # If the device is an iPad Pro, then need to treat this differently because orientation metadata
+            if device in IPAD_PRO_DEVICES and 'landscape' in orientation:
+                resize_cmd.extend(['-map_metadata', '0', '-metadata:s:v:0', 'rotate=0'])
 
             # Add whether keeping audio or not
             if keep_audio:
@@ -223,7 +256,8 @@ class DeviceFrameOverlayToVideo():
                 if os.path.exists(video_out):
                     print('Video saved to: {}'.format(video_out))
             except subprocess.CalledProcessError as e:
-                print('Conversion failed. Try again with the --debug argument.')
+                if not debug:
+                    print('Conversion failed! Try again with the --debug argument.')
                 sys.exit(1)
 
         except Exception as e:
