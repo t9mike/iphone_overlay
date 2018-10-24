@@ -43,21 +43,21 @@ DEVICE_FRAMES = {
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
         'iphone8SpaceGray': {
-            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-Space-Gray.png'),
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Landscape-SpaceGray.png'),
             'padding': '1800:920',
             'scale': 'scale=1334:-1',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8plusSilver': {
+        'iphone8plusS': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Silver.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8plusSpaceGray': {
-            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-Space-Gray.png'),
+        'iphone8plusSG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Landscape-SpaceGray.png'),
             'padding': '2540:1280',
             'scale': 'scale=1920:-1',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
@@ -93,29 +93,29 @@ DEVICE_FRAMES = {
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8Silver': {
+        'iphone8S': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Silver.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8SpaceGray': {
-            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-Space-Gray.png'),
+        'iphone8SG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8-Portrait-SpaceGray.png'),
             'padding': '920:1800',
             'scale': 'scale=-1:1334',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8plusSilver': {
+        'iphone8plusS': {
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Silver.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
-        'iphone8plusSpaceGray': {
-            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-Space-Gray.png'),
+        'iphone8plusSG': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-8Plus-Portrait-SpaceGray.png'),
             'padding': '1280:2540',
             'scale': 'scale=-1:1920',
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
