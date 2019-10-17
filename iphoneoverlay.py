@@ -128,6 +128,13 @@ DEVICE_FRAMES = {
             'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
             'video_position': '(ow-iw)/2:(oh-ih)/2',
         },
+        'iphoneXSsilver': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Portrait-Silver.png'),
+            'padding': '1294:2590',
+            'scale': 'scale=-1:1920',
+            'overlay_position': '(main_w-overlay_w)/2:(main_h-overlay_h)/2',
+            'video_position': '(ow-iw)/2:(oh-ih)/2',
+        },
         'iphoneXSmax': {  # Face ID equipped devices home screen no longer rotates == no orientation metadata?
             'filename': os.path.join(DEVICE_FRAMES_PATH, 'iPhone-XS-Max-Portrait-Space-Gray.png'),
             'padding': '1032:2050',
