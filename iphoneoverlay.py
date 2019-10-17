@@ -12,7 +12,7 @@ AUTHOR = 'Carl Windus'
 LICENSE = 'Python code is licensed under Apache License 2.0.'
 APPLE_COPYRIGHT = 'Apple, the Apple logo, Apple TV, Apple Watch, iPad, iPhone, iPod, iPod touch, iTunes, the iTunes logo, Mac, iMac, MacBook, MacBook Pro, MacBook Air, macOS, and QuickTime are trademarks of Apple Inc., registered in the U.S. and other countries.'
 
-DEVICE_FRAMES_PATH = 'device_frames'
+DEVICE_FRAMES_PATH = os.path.dirname(os.path.realpath(__file__)) + '/device_frames'
 
 DEVICE_FRAMES = {
     # Dimensions in this dict are designed to maintain the original screen recording resolution where possible
