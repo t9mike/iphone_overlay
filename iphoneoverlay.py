@@ -162,6 +162,13 @@ DEVICE_FRAMES = {
             'scale': 'scale=2560:-1',
             'overlay_position': '0:0',
             'video_position': '(ow-iw)/2:250',
+        },
+        'watch44white': {
+            'filename': os.path.join(DEVICE_FRAMES_PATH, 'Watch-44m-White.png'),
+            'padding': '508:856',
+            'scale': 'scale=-1:-1',
+            'overlay_position': '0:0',
+            'video_position': '59:205',
         }
     },
 }
